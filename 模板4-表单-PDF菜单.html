@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>英伦御膳 | 英国中式顶级餐厅</title>
+    <!-- Google Fonts & 基础样式 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Swiper CSS 用于轮播图 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <!-- Font Awesome 6 (免费图标库) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fffaf7;
+            color: #2c1810;
+            scroll-behavior: smooth;
+        }
+
+        /* 主色调：高级红  (#B22234 英伦感+深红，辅以金色/暗红) */
+        :root {
+            --primary-red: #9b1d2c;
+            --deep-red: #7a1320;
+            --gold-accent: #c6a43b;
+            --light-bg: #fff5f0;
+            --dark-charcoal: #2c2a29;
+            --shadow-sm: 0 20px 35px -12px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+
+        /* 容器 */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+
+        section {
+            padding: 80px 0;
+            border-bottom: 1px solid rgba(155, 29, 44, 0.1);
+        }
+
+        .section-title {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 48px;
+            color: var(--primary-red);
+            letter-spacing: -0.5px;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: var(--gold-accent);
+            margin: 16px auto 0;
+            border-radius: 4px;
+        }
+
+        /* 按钮样式 */
+        .btn-red {
+            display: inline-block;
+            background-color: var(--primary-red);
+            color: white;
+            font-weight: 600;
+            padding: 14px 32px;
+            border-radius: 40px;
+            text-decoration: none;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(155, 29, 44, 0.3);
+        }
+
+        .btn-red:hover {
+            background-color: var(--deep-red);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 22px rgba(122, 19, 32, 0.4);
+        }
+
+        /* 导航栏 */
+        .navbar {
+            background: white;
+            padding: 18px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            backdrop-filter: blur(2px);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-red);
+        }
+
+        .logo span {
+            color: var(--gold-accent);
+            font-weight: 400;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #2c1810;
+            font-weight: 500;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-red);
+        }
+
+        /* 首页 - 环境展示 Hero */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.3)), url('https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&w=1600') center/cover no-repeat;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+
+        .hero-content h2 {
+            font-size: 4rem;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            text-shadow: 2px 2px 15px rgba(0,0,0,0.6);
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            margin: 20px 0 30px;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 400;
+        }
+
+        /* 菜单按钮区 */
+        .menu-button-area {
+            text-align: center;
+            padding: 30px 0 20px;
+        }
+
+        .menu-pdf-btn {
+            background: var(--gold-accent);
+            color: #2c1810;
+            font-size: 1.3rem;
+            padding: 16px 48px;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+        }
+
+        .menu-pdf-btn:hover {
+            background: #b48c2c;
+            color: white;
+        }
+
+        /* 菜品轮播模块 */
+        .dishes-carousel {
+            background: var(--light-bg);
+        }
+
+        .swiper {
+            width: 100%;
+            padding: 20px 0 50px;
+        }
+
+        .swiper-slide {
+            background: white;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            text-align: center;
+            padding-bottom: 24px;
+        }
+
+        .dish-img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .swiper-slide:hover .dish-img {
+            transform: scale(1.02);
+        }
+
+        .dish-info {
+            padding: 18px 12px 12px;
+        }
+
+        .dish-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-red);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .dish-price {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--gold-accent);
+            margin-top: 8px;
+            letter-spacing: 1px;
+        }
+
+        /* 宣传视频模块 */
+        .video-section {
+            background: #1e1917;
+            color: white;
+        }
+
+        .video-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 20px 30px rgba(0,0,0,0.3);
+            aspect-ratio: 16 / 9;
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* 联系我们模块 */
+        .contact-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .contact-info {
+            flex: 1;
+            background: #fff;
+            padding: 32px;
+            border-radius: 32px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .contact-info h3 {
+            font-size: 1.8rem;
+            color: var(--primary-red);
+            margin-bottom: 20px;
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            font-size: 1.1rem;
+        }
+
+        .contact-detail i {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-red);
+            color: white;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .map-placeholder {
+            flex: 1;
+            background: #e9e2dc;
+            border-radius: 32px;
+            height: 320px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .map-placeholder iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* 预约模块 (Web3Forms 定制) */
+        .reservation-section {
+            background: linear-gradient(135deg, #fff5f0 0%, #ffece5 100%);
+        }
+
+        .web3form-card {
+            max-width: 780px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px 48px;
+            border-radius: 48px;
+            box-shadow: var(--shadow-sm);
+            border-top: 6px solid var(--gold-accent);
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c1810;
+        }
+
+        .web3form-card input,
+        .web3form-card textarea {
+            width: 100%;
+            padding: 14px 20px;
+            border: 1px solid #e2cfc0;
+            border-radius: 28px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: #fefaf7;
+        }
+
+        .web3form-card input:focus,
+        .web3form-card textarea:focus {
+            outline: none;
+            border-color: var(--primary-red);
+            box-shadow: 0 0 0 3px rgba(155, 29, 44, 0.2);
+        }
+
+        .web3form-card textarea {
+            min-height: 120px;
+            resize: vertical;
+            border-radius: 24px;
+        }
+
+        .submit-btn {
+            background-color: var(--primary-red);
+            width: 100%;
+            padding: 14px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 40px;
+            letter-spacing: 1px;
+        }
+
+        .footer {
+            background: #2c1810;
+            color: #f0e3d8;
+            text-align: center;
+            padding: 28px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 800px) {
+            .container {
+                padding: 0 20px;
+            }
+            .nav-links {
+                gap: 18px;
+                margin-top: 12px;
+            }
+            .hero-content h2 {
+                font-size: 2.2rem;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+            .web3form-card {
+                padding: 28px 20px;
+            }
+            .contact-grid {
+                flex-direction: column;
+            }
+        }
+
+        /* 菜单按钮跳转动画 */
+        .btn-menu-click {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <h1>LONDON <span>IMPERIAL</span></h1>
+                <p style="font-size: 0.75rem; letter-spacing: 1px;">Chinese Fine Dining</p>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">府邸·环境</a></li>
+                <li><a href="#menu-btn-area">御膳菜单</a></li>
+                <li><a href="#dishes">珍馐美馔</a></li>
+                <li><a href="#video">东方韵影</a></li>
+                <li><a href="#contact">联系我们</a></li>
+                <li><a href="#reservation">预定尊位</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 首页环境展示模块 (Home) -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h2>英伦 · 御膳房</h2>
+            <p>典雅东方气韵，融汇泰晤士河畔的皇室臻味。沉浸式餐厅环境，每一处皆艺术品。</p>
+            <a href="#menu-btn-area" class="btn-red" style="background: var(--gold-accent); color:#2c1810;">探索皇家飨宴 <i class="fas fa-arrow-down"></i></a>
+        </div>
+    </section>
+
+    <!-- 中间：菜单按钮模块 (跳转PDF) -->
+    <div id="menu-btn-area" class="menu-button-area container" style="margin-top: -20px; padding-bottom: 30px;">
+        <div style="background: white; border-radius: 60px; padding: 20px 40px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center;">
+            <h3 style="color: var(--primary-red); font-size: 1.8rem; margin-bottom: 12px;"><i class="fas fa-utensils"></i> 主厨甄选 · 经典菜单</h3>
+            <p style="margin-bottom: 24px;">点击下方按钮，浏览完整 PDF 菜单，尽享英伦中式融合盛宴。</p>
+            <!-- 菜单按钮，点击跳转PDF (附件已提供) 直接使用提供的菜单PDF链接，此处因为实际文件路径名为 12154-menu.pdf，我们使用相对路径或者外链？原附件名称为12154-menu.pdf，因此在同目录下可访问 -->
+            <a href="12154-menu.pdf" target="_blank" class="btn-red menu-pdf-btn"><i class="fas fa-file-pdf"></i> 阅览完整菜单 (PDF)</a>
+            <p style="font-size: 0.8rem; margin-top: 16px; color: #7a5a4a;">*PDF菜单内含多款经典菜式及价格</p>
+        </div>
+    </div>
+
+    <!-- 第二模块：精美菜品轮播图 (Swiper) -->
+    <section id="dishes" class="dishes-carousel">
+        <div class="container">
+            <h2 class="section-title">御膳·招牌珍馐</h2>
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper">
+                    <!-- 菜品1 -->
+                    <div class="swiper-slide">
+                        <img class="dish-img" src="https://images.pexels.com/photos/2338407/pexels-photo-2338407.jpeg?auto=compress&cs=tinysrgb&w=600" alt="北京烤鸭">
+                        <div class="dish-info">
+                            <div class="dish-name">香酥脆皮鸭</div>
+                            <div class="dish-price">£22.80</div>
+                        </div>
+                    </div>
+                    <!-- 菜品2 -->
+                    <div class="swiper-slide">
+                        <img class="dish-img" src="https://images.pexels.com/photos/1267325/pexels-photo-1267325.jpeg?auto=compress&cs=tinysrgb&w=600" alt="宫保虾球">
+                        <div class="dish-info">
+                            <div class="dish-name">宫保琥珀虾球</div>
+                            <div class="dish-price">£26.50</div>
+                        </div>
+                    </div>
+                    <!-- 菜品3 -->
+                    <div class="swiper-slide">
+                        <img class="dish-img" src="https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=600" alt="黑椒牛柳">
+                        <div class="dish-info">
+                            <div class="dish-name">黑椒爵士牛柳</div>
+                            <div class="dish-price">£29.90</div>
+                        </div>
+                    </div>
+                    <!-- 菜品4 -->
+                    <div class="swiper-slide">
+                        <img class="dish-img" src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=600" alt="点心拼盘">
+                        <div class="dish-info">
+                            <div class="dish-name">水晶虾饺皇·烧卖</div>
+                            <div class="dish-price">£14.80</div>
+                        </div>
+                    </div>
+                    <!-- 菜品5 增加一道特色菜 -->
+                    <div class="swiper-slide">
+                        <img class="dish-img" src="https://images.pexels.com/photos/262959/pexels-photo-262959.jpeg?auto=compress&cs=tinysrgb&w=600" alt="松鼠桂鱼">
+                        <div class="dish-info">
+                            <div class="dish-name">松子全鱼</div>
+                            <div class="dish-price">£34.50</div>
+                        </div>
+                    </div>
+                    <!-- 菜品6 -->
+                    <div class="swiper-slide">
+                        <img class="dish-img" src="https://images.pexels.com/photos/842571/pexels-photo-842571.jpeg?auto=compress&cs=tinysrgb&w=600" alt="炒时蔬">
+                        <div class="dish-info">
+                            <div class="dish-name">金银蒜蒸时蔬</div>
+                            <div class="dish-price">£12.50</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 轮播图导航按钮 -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 第三模块：宣传视频 -->
+    <section id="video" class="video-section">
+        <div class="container" style="text-align: center;">
+            <h2 class="section-title" style="color: #f5e2cf;">东方雅韵 · 宣传影片</h2>
+            <div class="video-container">
+                <!-- 英伦中式餐厅宣传视频示例（YouTube优雅素材，符合餐厅氛围） -->
+                <iframe src="https://www.youtube.com/embed/4A7g9yMkP1Y?si=oVtVtVQdHdJ-YF3N&autoplay=0&mute=0" title="英伦御膳宣传视频" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <p style="margin-top: 28px; font-size: 1rem; opacity: 0.9;">沉浸式体验皇家御宴，品味东方美学与英伦优雅的碰撞</p>
+        </div>
+    </section>
+
+    <!-- 第四模块：联系我们 -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title">联系我们</h2>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3><i class="fas fa-crown"></i> 伦敦·御膳公馆</h3>
+                    <div class="contact-detail">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>72 Shaftesbury Avenue, London W1D 6LT, 英国</span>
+                    </div>
+                    <div class="contact-detail">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>+44 (0)20 7240 8585</span>
+                    </div>
+                    <div class="contact-detail">
+                        <i class="fas fa-envelope"></i>
+                        <span>reservations@londonimperial.co.uk</span>
+                    </div>
+                    <div class="contact-detail">
+                        <i class="fas fa-clock"></i>
+                        <span>每日 12:00 - 22:30 (周一至周日)</span>
+                    </div>
+                    <div style="margin-top: 25px;">
+                        <a href="#" style="color: var(--primary-red); font-weight: 600;"><i class="fab fa-instagram"></i> imperial_dining</a>&nbsp;&nbsp;&nbsp;
+                        <a href="#" style="color: var(--primary-red);"><i class="fab fa-facebook"></i> LondonImperial</a>
+                    </div>
+                </div>
+                <div class="map-placeholder">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2483.354305461211!2d-0.129928684123811!3d51.51146647963505!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487604cb0f1aa56d%3A0x2a3e2c2b2d3b2e2f!2sChinatown%20London!5e0!3m2!1sen!2suk!4v1647456789123!5m2!1sen!2suk" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 第五模块：预约 (Web3Forms 集成, 完全按照提供的代码并主题化) -->
+    <section id="reservation" class="reservation-section">
+        <div class="container">
+            <h2 class="section-title">预约席位</h2>
+            <div class="web3form-card">
+                <p style="text-align: center; margin-bottom: 28px; font-size: 1.1rem;"><i class="fas fa-calendar-check" style="color: var(--gold-accent);"></i> 即刻预定您的专属飨宴，尊享礼遇</p>
+                <!-- 完全按照要求 Web3Form 代码，并添加样式类与主题匹配，但保留原有action/access_key -->
+                <form action="https://api.web3forms.com/submit" method="POST" id="web3form">
+                    <input type="hidden" name="access_key" value="091b76b4-f66a-48d5-b652-debfccb458e8">
+                    <!-- 增加隐藏字段：主题设定让邮件更好看 -->
+                    <input type="hidden" name="subject" value="伦敦御膳 - 新预约咨询">
+                    <input type="hidden" name="from_name" value="Imperial Restaurant Website">
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-user"></i> 您的姓名 *</label>
+                        <input type="text" name="name" placeholder="如: William Wang" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-envelope"></i> 电子邮箱 *</label>
+                        <input type="email" name="email" placeholder="example@domain.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-comment-dots"></i> 预约详情 / 特殊要求 *</label>
+                        <textarea name="message" placeholder="请告知日期、人数及忌口偏好，我们尽快确认..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn-red submit-btn"><i class="fas fa-paper-plane"></i> 提交预约请求</button>
+                    </div>
+                    <p style="font-size: 0.75rem; text-align: center; margin-top: 12px; color: #8a6e5a;">*提交后我们会在24小时内邮件确认，感谢您的支持。</p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>© 2025 伦敦御膳 Imperial Chinese Restaurant | 品味东方，礼遇英伦 | 匠心传承</p>
+        <p style="margin-top: 8px; font-size: 0.7rem;">本餐厅荣获米其林星厨推荐，食材新鲜，环境雅致。</p>
+    </footer>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        // 初始化 Swiper 轮播 (精美菜品)
+        var swiper = new Swiper(".mySwiper", {
+            slidesPerView: 1,
+            spaceBetween: 24,
+            loop: true,
+            autoplay: {
+                delay: 3500,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+                dynamicBullets: true,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 2,
+                },
+                1024: {
+                    slidesPerView: 3,
+                },
+            },
+            effect: "slide",
+            speed: 800,
+        });
+
+        // 可选: Web3Forms 提交成功/失败的反馈体验 (不破坏原有结构)
+        const form = document.getElementById('web3form');
+        if (form) {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> 提交中...';
+                submitBtn.disabled = true;
+                
+                const formData = new FormData(form);
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+                    const result = await response.json();
+                    if (result.success) {
+                        alert('预约已提交！御膳管家将尽快与您联系，感谢您的光临。');
+                        form.reset();
+                    } else {
+                        alert('提交失败，请稍后重试或致电联系我们。');
+                    }
+                } catch (error) {
+                    alert('网络问题，请检查后重试。');
+                } finally {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+            });
+        }
+        
+        // 平滑滚动导航
+        document.querySelectorAll('.nav-links a, .hero-content a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId && targetId !== '#' && targetId.startsWith('#')) {
+                    e.preventDefault();
+                    const targetElem = document.querySelector(targetId);
+                    if (targetElem) {
+                        targetElem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

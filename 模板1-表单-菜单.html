@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>环球食尚 · 东方珍馔 | 中餐·泰餐·特色料理</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #fefcf8;
+      color: #2c2b28;
+      line-height: 1.5;
+    }
+    h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; letter-spacing: -0.01em; }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+    .lang-switch { display: flex; justify-content: flex-end; padding: 16px 24px 0; gap: 12px; }
+    .lang-btn { background: transparent; border: 1px solid #d9cdc0; padding: 6px 20px; border-radius: 40px; font-weight: 500; cursor: pointer; color: #5a4d3e; transition: all 0.2s; }
+    .lang-btn.active { background: #b07d4c; border-color: #b07d4c; color: white; }
+    .navbar { display: flex; flex-wrap: wrap; justify-content: center; gap: 32px; padding: 16px 0 24px; border-bottom: 1px solid #ede3d8; margin-bottom: 32px; }
+    .navbar a { text-decoration: none; color: #4e4238; font-weight: 500; font-size: 1rem; padding: 4px 0; border-bottom: 2px solid transparent; cursor: pointer; }
+    .navbar a:hover { border-bottom-color: #b07d4c; color: #1f1c18; }
+    .carousel-section { margin-bottom: 64px; }
+    .carousel-container { position: relative; border-radius: 32px; overflow: hidden; box-shadow: 0 20px 30px -10px rgba(0,0,0,0.1); }
+    .carousel-slides { display: flex; transition: transform 0.5s ease; }
+    .carousel-slide { min-width: 100%; height: 460px; background-size: cover; background-position: center 30%; position: relative; }
+    .slide-content { position: absolute; bottom: 40px; left: 40px; background: rgba(0,0,0,0.55); backdrop-filter: blur(6px); padding: 14px 28px; border-radius: 60px; color: white; }
+    .slide-content h3 { font-size: 2rem; }
+    .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.85); border: none; width: 44px; height: 44px; border-radius: 44px; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #5a4d3e; transition: 0.2s; z-index: 5; }
+    .carousel-btn:hover { background: white; color: #b07d4c; }
+    .prev { left: 20px; } .next { right: 20px; }
+    .carousel-dots { display: flex; justify-content: center; gap: 10px; margin-top: 18px; }
+    .dot { width: 10px; height: 10px; background: #cfc2b5; border-radius: 10px; border: none; cursor: pointer; }
+    .dot.active { background: #b07d4c; width: 26px; }
+    section { margin-bottom: 80px; }
+    .section-title { font-size: 2.4rem; margin-bottom: 32px; position: relative; display: inline-block; }
+    .section-title:after { content: ''; position: absolute; bottom: -8px; left: 0; width: 70%; height: 3px; background: #dbbc9b; }
+    .intro-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 44px; align-items: center; }
+    .intro-photo img { width: 100%; height: 360px; object-fit: cover; border-radius: 28px; box-shadow: 0 12px 24px rgba(0,0,0,0.05); }
+    .intro-text p { font-size: 1.08rem; color: #4b4036; margin-bottom: 20px; }
+    .menu-section { background: #ffffff; border-radius: 32px; padding: 8px 0 16px; box-shadow: 0 6px 18px rgba(0,0,0,0.02); }
+    .category-selector-wrapper { display: flex; align-items: center; gap: 20px; margin: 28px 0 30px; flex-wrap: wrap; }
+    .category-selector-label { font-weight: 600; color: #5a4d3e; }
+    .category-selector { position: relative; min-width: 210px; }
+    .category-selector-btn { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 12px 20px; background: white; border: 1px solid #e1d5ca; border-radius: 48px; font-weight: 500; cursor: pointer; background: #fefaf5; }
+    .category-selector-btn i { color: #b07d4c; }
+    .category-dropdown { position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: white; border-radius: 24px; box-shadow: 0 12px 28px rgba(0,0,0,0.1); border: 1px solid #ece1d7; max-height: 0; overflow: hidden; transition: all 0.25s; z-index: 60; }
+    .category-selector.open .category-dropdown { max-height: 340px; overflow-y: auto; }
+    .category-option { padding: 12px 20px; cursor: pointer; transition: 0.1s; }
+    .category-option:hover { background: #f7f1ea; }
+    .category-option.active { background: #b07d4c; color: white; }
+    .menu-list { background: #fff; border-radius: 28px; border: 1px solid #eee5dd; overflow: hidden; }
+    .menu-category-section { border-bottom: 1px solid #f0e7df; }
+    .menu-category-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 28px; background: #fefaf6; cursor: pointer; transition: background 0.2s; }
+    .menu-category-header:hover { background: #faf3ec; }
+    .menu-category-title { font-size: 1.35rem; font-weight: 700; color: #3c2e24; }
+    .menu-category-toggle { color: #b07d4c; transition: transform 0.2s; }
+    .menu-category-section.expanded .menu-category-toggle { transform: rotate(90deg); }
+    .menu-items { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+    .menu-category-section.expanded .menu-items { max-height: 2000px; }
+    .menu-item { display: flex; justify-content: space-between; align-items: baseline; padding: 16px 28px; border-bottom: 1px solid #f5ece3; }
+    .menu-item:last-child { border-bottom: none; }
+    .menu-item-info { flex: 1; padding-right: 20px; }
+    .menu-item-en { font-weight: 700; font-size: 1.05rem; color: #2b241f; margin-bottom: 4px; }
+    .menu-item-zh { font-size: 0.9rem; color: #8f7a68; }
+    .menu-item-price { font-weight: 700; font-size: 1.2rem; color: #b07d4c; white-space: nowrap; }
+    .empty-message { text-align: center; padding: 56px; color: #aa9a89; }
+    .video-wrapper { border-radius: 32px; overflow: hidden; box-shadow: 0 12px 26px rgba(0,0,0,0.06); }
+    video { width: 100%; display: block; max-height: 500px; object-fit: cover; }
+    .reviews-flex { display: flex; gap: 28px; flex-wrap: wrap; }
+    .review-card { background: white; border-radius: 28px; padding: 28px; flex: 1 1 250px; border: 1px solid #f0e4d9; box-shadow: 0 6px 14px rgba(0,0,0,0.02); }
+    .stars { color: #e5b63e; font-size: 1.3rem; margin-bottom: 12px; letter-spacing: 2px; }
+    .review-text { font-style: italic; color: #5a4b3c; }
+    .contact-info { background: #fffaf5; padding: 32px 36px; border-radius: 32px; display: flex; flex-wrap: wrap; gap: 40px; border: 1px solid #e7ddd2; }
+    .contact-item { display: flex; align-items: center; gap: 16px; }
+    .contact-item i { font-size: 28px; color: #b07d4c; width: 36px; }
+    .reserve-wrapper { text-align: center; margin: 20px 0 40px; }
+    .reserve-btn { background: #2c2b28; border: none; color: white; padding: 16px 48px; font-size: 1.25rem; border-radius: 60px; font-weight: 600; cursor: pointer; transition: 0.2s; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+    .reserve-btn:hover { background: #b07d4c; transform: scale(1.02); }
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.35); backdrop-filter: blur(6px); align-items: center; justify-content: center; z-index: 1000; }
+    .modal-card { background: white; max-width: 460px; width: 90%; padding: 36px 32px; border-radius: 40px; position: relative; box-shadow: 0 25px 45px rgba(0,0,0,0.2); }
+    .modal-close { position: absolute; top: 20px; right: 24px; font-size: 28px; cursor: pointer; color: #9b8a7a; }
+    .modal h2 { margin-bottom: 28px; font-size: 1.9rem; }
+    .modal input, .modal textarea { width: 100%; padding: 14px 18px; margin-bottom: 20px; border: 1px solid #e2d3c7; border-radius: 40px; font-size: 1rem; background: #fefcf9; font-family: inherit; }
+    .modal textarea { border-radius: 24px; resize: vertical; min-height: 90px; }
+    .modal-submit { background: #b07d4c; color: white; border: none; padding: 14px; width: 100%; border-radius: 60px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: 0.2s; }
+    .modal-submit:hover { background: #9a683d; }
+    footer { text-align: center; padding: 28px; color: #927f6d; border-top: 1px solid #ede3d8; margin-top: 20px; }
+    [data-lang] { display: none; }
+    .lang-zh [data-lang="zh"] { display: block; }
+    .lang-en [data-lang="en"] { display: block; }
+    .lang-zh [data-lang="zh"].inline { display: inline; }
+    .lang-en [data-lang="en"].inline { display: inline; }
+    .lang-zh .category-option span[data-lang="zh"], .lang-en .category-option span[data-lang="en"] { display: inline; }
+    .category-option span { display: none; }
+    .lang-zh .category-option span[data-lang="zh"] { display: inline; }
+    .lang-en .category-option span[data-lang="en"] { display: inline; }
+    .fixed-nav-offset { scroll-margin-top: 20px; }
+  </style>
+</head>
+<body class="lang-zh">
+  <div class="lang-switch">
+    <button class="lang-btn active" id="btnZh">中文</button>
+    <button class="lang-btn" id="btnEn">English</button>
+  </div>
+  <div class="container">
+    <div class="navbar">
+      <a href="#home" data-lang="zh">首页</a><a href="#home" data-lang="en">Home</a>
+      <a href="#intro" data-lang="zh">餐馆介绍</a><a href="#intro" data-lang="en">About</a>
+      <a href="#menu" data-lang="zh">菜单</a><a href="#menu" data-lang="en">Menu</a>
+      <a href="#video" data-lang="zh">视频</a><a href="#video" data-lang="en">Video</a>
+      <a href="#reviews" data-lang="zh">评价</a><a href="#reviews" data-lang="en">Reviews</a>
+      <a href="#contact" data-lang="zh">联系</a><a href="#contact" data-lang="en">Contact</a>
+    </div>
+
+    <section id="home" class="carousel-section">
+      <div class="carousel-container">
+        <div class="carousel-slides" id="carouselSlides">
+          <div class="carousel-slide" style="background-image: url('https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');"><div class="slide-content"><h3 data-lang="zh">招牌香酥鸭</h3><h3 data-lang="en">Crispy Aromatic Duck</h3></div></div>
+          <div class="carousel-slide" style="background-image: url('https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');"><div class="slide-content"><h3 data-lang="zh">泰式冬阴功海鲜</h3><h3 data-lang="en">Tom Yum King Prawn</h3></div></div>
+          <div class="carousel-slide" style="background-image: url('https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');"><div class="slide-content"><h3 data-lang="zh">经典中式炒牛河</h3><h3 data-lang="en">Beef Ho Fun</h3></div></div>
+        </div>
+        <button class="carousel-btn prev" id="prevSlide"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-btn next" id="nextSlide"><i class="fas fa-chevron-right"></i></button>
+      </div>
+      <div class="carousel-dots" id="carouselDots"></div>
+    </section>
+
+    <section id="intro">
+      <h2 class="section-title"><span data-lang="zh">餐馆介绍</span><span data-lang="en">Our Story</span></h2>
+      <div class="intro-grid">
+        <div class="intro-photo"><img src="https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="餐厅环境"></div>
+        <div class="intro-text"><p data-lang="zh"><strong>环球食尚 · 东方韵味</strong> 融合正统中餐技艺与泰式风情，传承经典又不失新意。严选新鲜食材，每一道菜都由经验丰富的厨师团队精心烹制。无论是精致点心、香酥烤鸭还是泰式咖喱，都旨在带来难忘的味蕾之旅。</p><p data-lang="en"><strong>Global Taste · Oriental Essence</strong> blends authentic Chinese culinary arts with Thai inspiration. From crispy duck to Tom Yum, each dish is crafted with passion and fresh ingredients. Enjoy a journey through bold flavors and elegant ambiance.</p></div>
+      </div>
+    </section>
+
+    <section id="menu" class="menu-section">
+      <h2 class="section-title"><span data-lang="zh">精选菜单</span><span data-lang="en">Our Menu</span></h2>
+      <div class="category-selector-wrapper">
+        <span class="category-selector-label" data-lang="zh">菜品类别</span><span class="category-selector-label" data-lang="en">Category</span>
+        <div class="category-selector" id="categorySelector">
+          <button class="category-selector-btn" id="categorySelectorBtn"><span id="selectedCategoryText"><span data-lang="zh">全部菜品</span><span data-lang="en">All Dishes</span></span><i class="fas fa-chevron-down"></i></button>
+          <div class="category-dropdown" id="categoryDropdown"></div>
+        </div>
+      </div>
+      <div class="menu-list" id="menuList"></div>
+    </section>
+
+    <section id="video">
+      <h2 class="section-title"><span data-lang="zh">餐厅印象</span><span data-lang="en">Video Tour</span></h2>
+      <div class="video-wrapper"><video controls poster="https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"><source src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4" type="video/mp4"></video></div>
+    </section>
+
+    <section id="reviews">
+      <h2 class="section-title"><span data-lang="zh">顾客好评</span><span data-lang="en">Reviews</span></h2>
+      <div class="reviews-flex">
+        <div class="review-card"><div class="stars">★★★★★</div><p class="review-text" data-lang="zh">“头盘拼盘太惊艳了，椒盐鱿鱼外酥里嫩，服务周到！”</p><p class="review-text" data-lang="en">"The Mixed Hors D'oeuvres were incredible. Crispy squid is a must!"</p><p>— James L.</p></div>
+        <div class="review-card"><div class="stars">★★★★★</div><p class="review-text" data-lang="zh">“泰式绿咖喱虾浓郁正宗，环境优雅，十分推荐。”</p><p class="review-text" data-lang="en">"Authentic Thai Green Curry, cozy atmosphere. Highly recommend."</p><p>— 王敏</p></div>
+        <div class="review-card"><div class="stars">★★★★★</div><p class="review-text" data-lang="zh">“香酥鸭配上薄饼酱料，口感一流，会再来！”</p><p class="review-text" data-lang="en">"Crispy Aromatic Duck is heaven. Will definitely return."</p><p>— Sarah Chen</p></div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2 class="section-title"><span data-lang="zh">联系与位置</span><span data-lang="en">Contact & Location</span></h2>
+      <div class="contact-info"><div class="contact-item"><i class="fas fa-phone-alt"></i><span>+44 (0)20 7946 0138</span></div><div class="contact-item"><i class="fas fa-envelope"></i><span>hello@globaltaste.uk</span></div><div class="contact-item"><i class="fab fa-google"></i><span>48 Gerrard St, London W1D 5QJ</span></div></div>
+    </section>
+
+    <div class="reserve-wrapper"><button class="reserve-btn" id="reserveBtn"><i class="far fa-calendar-check"></i> <span data-lang="zh">预约订位</span><span data-lang="en">Reserve Table</span></button></div>
+  </div>
+
+  <div class="modal" id="reserveModal">
+    <div class="modal-card"><span class="modal-close" id="closeModal">&times;</span><h2 data-lang="zh">预约订位</h2><h2 data-lang="en">Book a Table</h2>
+      <form action="https://api.web3forms.com/submit" method="POST" id="web3Form">
+        <input type="hidden" name="access_key" value="091b76b4-f66a-48d5-b652-debfccb458e8">
+        <input type="text" name="name" placeholder="您的姓名 / Your Name" required>
+        <input type="email" name="email" placeholder="电子邮箱 / Email" required>
+        <textarea name="message" placeholder="预约详情（日期/人数/特殊要求） / Reservation details (date, guests, requests)" required></textarea>
+        <button type="submit" class="modal-submit"><span data-lang="zh">提交预约</span><span data-lang="en">Submit</span></button>
+      </form>
+    </div>
+  </div>
+
+  <footer><span data-lang="zh">© 2025 环球食尚 · 匠心美味 | 中泰融合料理</span><span data-lang="en">© 2025 Global Taste · Artisan Flavors | Chinese & Thai Cuisine</span></footer>
+
+  <script>
+    (function(){
+      // ----- 完整菜单数据（基于附件excel 中文/英文/价格）-----
+      const menuRaw = [
+        { cat:"头盘与小食", en:"Mixed Hors D'oeuvres", zh:"头盘拼", price:12.60 },
+        { cat:"头盘与小食", en:"Mixed Starters", zh:"前菜拼", price:12.60 },
+        { cat:"头盘与小食", en:"Sesame Prawn on Toast", zh:"虾多士", price:5.80 },
+        { cat:"头盘与小食", en:"Barbecued Spare Ribs with BBQ Sauce", zh:"BBQ骨", price:7.70 },
+        { cat:"头盘与小食", en:"Barbecued Spare Ribs with Honey Sauce", zh:"蜜骨", price:7.70 },
+        { cat:"头盘与小食", en:"Barbecued Spare Ribs with Dry", zh:"干骨", price:7.70 },
+        { cat:"头盘与小食", en:"Peking Style Spare Ribs", zh:"京骨", price:7.70 },
+        { cat:"头盘与小食", en:"Salt & Pepper Spare Ribs with Chilli", zh:"椒盐骨", price:7.70 },
+        { cat:"头盘与小食", en:"Salt & Pepper Chicken (Large)", zh:"椒盐鸡（大）", price:7.80 },
+        { cat:"头盘与小食", en:"Salt & Pepper Chicken Wings (Large)", zh:"椒盐鸡翅（大）", price:7.20 },
+        { cat:"头盘与小食", en:"Salt & Pepper Chips (Large)", zh:"椒盐条（大）", price:5.40 },
+        { cat:"头盘与小食", en:"Satay Chicken on Skewers with Peanut Sauce", zh:"沙爹鸡串", price:7.40 },
+        { cat:"头盘与小食", en:"Smoked Shredded Chicken", zh:"分鸡丝", price:7.30 },
+        { cat:"头盘与小食", en:"Salt & Pepper Shredded Chicken with Chilli", zh:"椒盐鸡丝", price:7.30 },
+        { cat:"头盘与小食", en:"Phoenix King Prawns (8) in Breadcrumbs", zh:"凤尾虾", price:7.80 },
+        { cat:"头盘与小食", en:"Crispy Pancake Rolls (2)", zh:"春卷（2）", price:4.00 },
+        { cat:"头盘与小食", en:"Vegetarian Spring Rolls (10)", zh:"斋春卷(10)", price:4.10 },
+        { cat:"头盘与小食", en:"Crispy Wan Ton (6)", zh:"炸云吞", price:5.60 },
+        { cat:"头盘与小食", en:"Thai Vegetarian Spring Rolls (5)", zh:"泰式斋春卷（5）", price:5.60 },
+        { cat:"头盘与小食", en:"Crispy Seaweed", zh:"炸海草", price:5.40 },
+        { cat:"头盘与小食", en:"Grilled Pork Dumplings (5)", zh:"猪肉煎饺（5）", price:6.10 },
+        { cat:"头盘与小食", en:"Salt & Pepper Squid with Chilli", zh:"椒盐鱿鱼", price:7.70 },
+        { cat:"头盘与小食", en:"Salt & Pepper King Prawns with Chilli", zh:"椒盐大虾", price:7.70 },
+        { cat:"头盘与小食", en:"Salt & Pepper Tofu", zh:"椒盐豆腐", price:7.00 },
+        { cat:"头盘与小食", en:"Grilled Chicken Dumplings", zh:"鸡肉煎饺", price:6.30 },
+        { cat:"头盘与小食", en:"Stuffed Crab Claws (5)", zh:"蟹棒（5）", price:5.80 },
+        { cat:"头盘与小食", en:"Prawn Crackers", zh:"虾片", price:2.90 },
+        { cat:"点心", en:"Prawn Dumplings (4)", zh:"虾饺（4）", price:5.80 },
+        { cat:"点心", en:"Chicken Buns (3)", zh:"鸡肉包（3）", price:5.90 },
+        { cat:"点心", en:"Shao Mai (Prawn & Pork Dumplings)(4)", zh:"烧卖（4）", price:5.80 },
+        { cat:"点心", en:"BBQ Pork Buns (3)", zh:"叉烧包（3）", price:6.20 },
+        { cat:"点心", en:"Dim Sum Mix Platter", zh:"点心拼盘", price:12.90 },
+        { cat:"汤", en:"Hot & Sour Soup", zh:"酸辣汤", price:4.60 },
+        { cat:"汤", en:"Won Ton Soup Chinese Ravioli", zh:"云吞汤", price:4.70 },
+        { cat:"汤", en:"Chicken & Sweet Corn Soup", zh:"鸡米汤", price:4.50 },
+        { cat:"汤", en:"Crabmeat & Sweet Corn Soup", zh:"蟹米汤", price:4.50 },
+        { cat:"汤", en:"Chicken Noodle & Mushroom Soup", zh:"蘑菇鸡面汤", price:4.50 },
+        { cat:"汤", en:"Thai Yom Yum Chicken Rice Noodles Soup", zh:"泰式冬阴鸡米粉汤", price:4.90 },
+        { cat:"汤", en:"Chicken Rice Noodles Soup", zh:"鸡米粉汤", price:4.50 },
+        { cat:"鸭", en:"Crispy Aromatic Duck Quarter", zh:"香酥鸭1/4", price:11.50 },
+        { cat:"鸭", en:"Crispy Aromatic Duck Half", zh:"香酥鸭1/2", price:19.90 },
+        { cat:"鸭", en:"Cantonese Roast Duck", zh:"广式鸭", price:8.10 },
+        { cat:"鸭", en:"Sliced Duck with Mushrooms", zh:"蘑菇鸭", price:8.20 },
+        { cat:"鸭", en:"Sliced Duck with Pineapple", zh:"菠萝鸭", price:8.20 },
+        { cat:"鸭", en:"Sliced Duck with Plum Sauce", zh:"梅鸭", price:8.20 },
+        { cat:"鸭", en:"Sliced Duck with Red Peppers in Black Bean Sauce", zh:"红椒豉汁鸭", price:8.20 },
+        { cat:"鸭", en:"Sliced Duck with Cashew Nuts in Yellow Bean Sauce", zh:"酱爆鸭", price:8.20 },
+        { cat:"鸭", en:"Szechuan Style Duck in Sweet Pepper Hot Sauce", zh:"四川鸭", price:8.20 },
+        { cat:"羊肉", en:"Lamb with Ginger & Spring Onions", zh:"姜葱羊", price:8.30 },
+        { cat:"羊肉", en:"Lamb with Red Peppers in Black Bean Sauce", zh:"红椒豉汁羊", price:8.30 },
+        { cat:"羊肉", en:"Szechuan Style Lamb in Sweet Pepper Hot Sauce", zh:"四川羊", price:8.30 },
+        { cat:"大虾", en:"Kung Po King Prawns in Piquant Hot Sauce", zh:"宫保大虾", price:8.00 },
+        { cat:"大虾", en:"Szechuan King Prawns in Sweet Pepper Hot Sauce", zh:"四川大虾", price:8.00 },
+        { cat:"大虾", en:"King Prawns with Mange Tout & Garlic", zh:"蜜豆大虾", price:8.00 },
+        { cat:"大虾", en:"Spicy King Prawns in Garlic & Chilli Sauce", zh:"酸辣大虾", price:8.00 },
+        { cat:"大虾", en:"King Prawns with Mushrooms", zh:"蘑菇大虾", price:8.00 },
+        { cat:"大虾", en:"King Prawns with Red Peppers in Black Bean Sauce", zh:"红椒豉汁大虾", price:8.00 },
+        { cat:"大虾", en:"King Prawns with Ginger & Spring Onions", zh:"姜葱大虾", price:8.00 },
+        { cat:"大虾", en:"Stir Fried King Prawns with Broccoli", zh:"西兰花大虾", price:8.00 },
+        { cat:"鸡肉", en:"Deep Fried Shredded Chicken in Chilli Sauce", zh:"辣鸡丝", price:7.60 },
+        { cat:"鸡肉", en:"Kung Po Chicken in Piquant Hot Sauce", zh:"宫保鸡", price:7.30 },
+        { cat:"鸡肉", en:"Szechuan Chicken in Sweet Pepper Hot Sauce", zh:"四川鸡", price:7.30 },
+        { cat:"鸡肉", en:"Grilled Chicken in Lemon Sauce", zh:"柠檬鸡", price:7.30 },
+        { cat:"鸡肉", en:"Chicken with Cashew Nuts", zh:"腰果鸡", price:7.30 },
+        { cat:"鸡肉", en:"Chicken with Mushrooms", zh:"蘑菇鸡", price:7.30 },
+        { cat:"鸡肉", en:"Chicken with Mixed Vegetables", zh:"杂菜鸡", price:7.30 },
+        { cat:"牛肉", en:"Deep Fried Shredded Beef in Chilli Sauce", zh:"辣牛丝", price:7.60 },
+        { cat:"牛肉", en:"Szechuan Beef in Sweet Pepper Hot Sauce", zh:"四川牛", price:7.50 },
+        { cat:"牛肉", en:"Sliced Beef with Ginger & Spring Onions", zh:"姜葱牛", price:7.50 },
+        { cat:"牛肉", en:"Sliced Beef with Mixed Vegetables", zh:"杂菜牛", price:7.50 },
+        { cat:"牛肉", en:"Stir Fried Beef with Broccoli", zh:"西兰花牛", price:7.50 },
+        { cat:"米饭", en:"Special Fried Rice", zh:"招牌饭（干）", price:6.40 },
+        { cat:"米饭", en:"King Prawn Fried Rice", zh:"大虾饭", price:7.50 },
+        { cat:"米饭", en:"Chicken Fried Rice", zh:"鸡饭", price:6.30 },
+        { cat:"米饭", en:"Egg Fried Rice", zh:"蛋饭", price:4.30 },
+        { cat:"米饭", en:"Boiled Rice", zh:"白饭", price:4.10 },
+        { cat:"米饭", en:"Singapore Fried Rice", zh:"星饭", price:7.00 },
+        { cat:"面食", en:"Chicken Chow Mein", zh:"鸡面", price:6.40 },
+        { cat:"面食", en:"Beef Chow Mein", zh:"牛面", price:6.40 },
+        { cat:"面食", en:"Singapore Rice Noodles", zh:"星米粉", price:7.20 },
+        { cat:"面食", en:"Chicken Ho Fun", zh:"鸡河粉", price:8.00 },
+        { cat:"面食", en:"Beef Ho Fun", zh:"牛河粉", price:8.00 },
+        { cat:"面食", en:"King Prawn Udon Noodles", zh:"大虾乌冬", price:9.00 },
+        { cat:"泰式风味", en:"Tom Yum King Prawn", zh:"冬阴大虾", price:7.80 },
+        { cat:"泰式风味", en:"Thai Green Curry Chicken", zh:"泰绿咖喱鸡", price:8.50 },
+        { cat:"泰式风味", en:"Pad Thai King Prawn", zh:"扒泰大虾", price:8.60 },
+        { cat:"泰式风味", en:"Drunken Noodles Chicken", zh:"泰鸡面", price:9.50 },
+        { cat:"泰式风味", en:"Tom Yum Fried Rice Chicken", zh:"冬阴鸡饭", price:8.00 },
+        { cat:"咖喱", en:"Special Curry", zh:"招牌咖喱", price:7.40 },
+        { cat:"咖喱", en:"Chicken Curry", zh:"咖喱鸡", price:8.10 },
+        { cat:"咖喱", en:"Vegetable Curry", zh:"咖喱菜", price:6.20 },
+        { cat:"素菜豆腐", en:"Tofu with Mixed Vegetables", zh:"杂菜豆腐", price:6.60 },
+        { cat:"素菜豆腐", en:"Broccoli in Oyster Sauce", zh:"蚝油西兰花", price:6.10 },
+        { cat:"素菜豆腐", en:"Seasonal Mixed Vegetables", zh:"时令杂菜", price:6.00 }
+      ];
+      
+      let currentMenu = [...menuRaw];
+      let currentCat = 'all';
+      let expandedCats = new Set();
+
+      function getUniqueCategories() { return [...new Set(currentMenu.map(i => i.cat))].sort(); }
+      
+      function renderCategoryDropdown() {
+        const dropdown = document.getElementById('categoryDropdown');
+        const isZh = document.body.classList.contains('lang-zh');
+        const cats = getUniqueCategories();
+        let html = `<div class="category-option ${currentCat === 'all' ? 'active' : ''}" data-cat="all"><span data-lang="zh">全部菜品</span><span data-lang="en">All Dishes</span></div>`;
+        cats.forEach(c => { html += `<div class="category-option ${currentCat === c ? 'active' : ''}" data-cat="${c}">${isZh ? c : c}</div>`; });
+        dropdown.innerHTML = html;
+        dropdown.querySelectorAll('.category-option').forEach(opt => {
+          opt.addEventListener('click', (e) => { e.stopPropagation(); currentCat = opt.dataset.cat; renderCategoryDropdown(); renderMenuList(); updateSelectedText(); document.getElementById('categorySelector').classList.remove('open'); });
+        });
+        updateSelectedText();
+      }
+      
+      function updateSelectedText() {
+        const span = document.getElementById('selectedCategoryText');
+        const isZh = document.body.classList.contains('lang-zh');
+        if(currentCat === 'all') span.innerHTML = isZh ? '全部菜品' : 'All Dishes';
+        else span.innerHTML = isZh ? currentCat : currentCat;
+      }
+      
+      function renderMenuList() {
+        const container = document.getElementById('menuList');
+        let filtered = currentCat === 'all' ? currentMenu : currentMenu.filter(i => i.cat === currentCat);
+        if(filtered.length === 0) { container.innerHTML = `<div class="empty-message"><span data-lang="zh">暂无菜品</span><span data-lang="en">No items</span></div>`; return; }
+        const grouped = {};
+        filtered.forEach(i => { if(!grouped[i.cat]) grouped[i.cat]=[]; grouped[i.cat].push(i); });
+        let html = '';
+        for(let cat in grouped) {
+          const isExp = expandedCats.has(cat);
+          html += `<div class="menu-category-section ${isExp ? 'expanded' : ''}" data-category="${cat}">
+            <div class="menu-category-header"><span class="menu-category-title">${cat}</span><span class="menu-category-toggle"><i class="fas fa-chevron-right"></i></span></div>
+            <div class="menu-items">`;
+          grouped[cat].forEach(item => { html += `<div class="menu-item"><div class="menu-item-info"><div class="menu-item-en">${item.en}</div><div class="menu-item-zh">${item.zh}</div></div><div class="menu-item-price">$${item.price.toFixed(2)}</div></div>`; });
+          html += `</div></div>`;
+        }
+        container.innerHTML = html;
+        document.querySelectorAll('.menu-category-header').forEach(header => {
+          header.addEventListener('click', (e) => {
+            const section = header.closest('.menu-category-section');
+            const cat = section.dataset.category;
+            if(section.classList.contains('expanded')) { section.classList.remove('expanded'); expandedCats.delete(cat); }
+            else { section.classList.add('expanded'); expandedCats.add(cat); }
+          });
+        });
+      }
+      
+      // 初始化展开所有分类
+      getUniqueCategories().forEach(c => expandedCats.add(c));
+      
+      // 轮播
+      let slideIndex = 0, slides = document.querySelectorAll('.carousel-slide'), interval;
+      function updateCarousel() { document.querySelector('.carousel-slides').style.transform = `translateX(-${slideIndex*100}%)`; document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active', i===slideIndex)); }
+      function nextSlide(){ slideIndex = (slideIndex+1)%slides.length; updateCarousel(); }
+      function prevSlide(){ slideIndex = (slideIndex-1+slides.length)%slides.length; updateCarousel(); }
+      document.getElementById('nextSlide').addEventListener('click', nextSlide);
+      document.getElementById('prevSlide').addEventListener('click', prevSlide);
+      const dotsDiv = document.getElementById('carouselDots');
+      slides.forEach((_,i)=>{ let d=document.createElement('button'); d.classList.add('dot'); if(i===0)d.classList.add('active'); d.addEventListener('click',()=>{slideIndex=i; updateCarousel();}); dotsDiv.appendChild(d); });
+      interval = setInterval(nextSlide,5000);
+      const caroContainer = document.querySelector('.carousel-container');
+      caroContainer.addEventListener('mouseenter',()=>clearInterval(interval));
+      caroContainer.addEventListener('mouseleave',()=>interval=setInterval(nextSlide,5000));
+      
+      // 下拉交互
+      const selectorDiv = document.getElementById('categorySelector');
+      const selectorBtn = document.getElementById('categorySelectorBtn');
+      selectorBtn.addEventListener('click',(e)=>{ e.stopPropagation(); selectorDiv.classList.toggle('open'); });
+      document.addEventListener('click',(e)=>{ if(!selectorDiv.contains(e.target)) selectorDiv.classList.remove('open'); });
+      
+      // 语言切换：重新渲染菜单及下拉（保持分类文本）
+      function refreshByLang() {
+        renderCategoryDropdown();  // 重新生成选项，保持高亮
+        renderMenuList();         // 重新渲染菜品列表
+        updateSelectedText();
+      }
+      const btnZh = document.getElementById('btnZh'), btnEn = document.getElementById('btnEn');
+      btnZh.addEventListener('click', () => { document.body.classList.remove('lang-en'); document.body.classList.add('lang-zh'); btnZh.classList.add('active'); btnEn.classList.remove('active'); refreshByLang(); });
+      btnEn.addEventListener('click', () => { document.body.classList.remove('lang-zh'); document.body.classList.add('lang-en'); btnEn.classList.add('active'); btnZh.classList.remove('active'); refreshByLang(); });
+      
+      // 预约弹窗 & web3forms
+      const modal = document.getElementById('reserveModal');
+      const reserveBtn = document.getElementById('reserveBtn');
+      const closeModal = document.getElementById('closeModal');
+      reserveBtn.onclick = () => modal.style.display = 'flex';
+      closeModal.onclick = () => modal.style.display = 'none';
+      window.onclick = (e) => { if(e.target === modal) modal.style.display = 'none'; };
+      const web3Form = document.getElementById('web3Form');
+      web3Form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(web3Form);
+        try {
+          const response = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData });
+          if(response.ok) { alert('预约已提交！我们期待您的光临。'); modal.style.display = 'none'; web3Form.reset(); }
+          else alert('提交失败，请稍后重试。');
+        } catch(err) { alert('网络错误，请检查连接。'); }
+      });
+      
+      // 平滑滚动
+      document.querySelectorAll('.navbar a').forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href').substring(1);
+          const target = document.getElementById(targetId);
+          if(target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+      
+      renderCategoryDropdown();
+      renderMenuList();
+    })();
+  </script>
+</body>
+</html>
